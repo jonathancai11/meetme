@@ -5,45 +5,35 @@ import { OverlayTrigger, Tooltip, Button, Image } from "react-bootstrap";
 import GoogleButton from "../../assets/google.png";
 import "./Header.css";
 
-export default function Header({ handleSignClick }) {
-  const user = useSelector((state) => state.user);
+export default function Header({ handleLoginClick, handleAvatarClick }) {
+  const users = useSelector((state) => state.users);
 
   return (
     <div className="header">
-      <div className="titlediv">
+      <div className="logodiv">
         <a href="/">
           <img src="/logo.svg" alt="" height={40} />
         </a>
+      </div>
 
-        <div>
-          {!user ? (
-            <OverlayTrigger
-              placement={"bottom"}
-              overlay={
-                <Tooltip className="overlay" style={{ zIndex: 3 }}>
-                  {"Imports your Google Calendar events."}
-                </Tooltip>
-              }
-            >
-              <div style={{ cursor: "pointer" }} onClick={handleSignClick}>
-                <img src={GoogleButton} alt="" />
-              </div>
-            </OverlayTrigger>
-          ) : (
-            <Button variant="Light" onClick={handleSignClick}>
-              Log out
-            </Button>
-          )}
-          {user && (
+      <div className="titlediv">
+        {
+          users.map((user, idx) =>
             <Image
               className="avatar"
               src={user.img}
               roundedCircle
               width={40}
               height={40}
+              onClick={() => handleAvatarClick(user.email)}
             />
-          )}
+          )
+        }
+
+        <div className="avatar" onClick={handleLoginClick}>
+          <img src={GoogleButton} alt="" />
         </div>
+        
       </div>
     </div>
   );
